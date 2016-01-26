@@ -31,7 +31,7 @@ public class MessageController {
     private static final String aesKey = "Ly2xPGHMoMUfzNCxqIN3Z2NopsnKzGGEwvRo56j0pWT";
 
     @RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
-    public String dispatchMsg(@RequestParam("echostr") String echostr) {
+    public String dispatchMsg(@RequestParam(value = "echostr", required = false) String echostr) {
         if (StringUtils.isEmpty(echostr)) { //接受普通消息
             return "forward:/msg";
         } else { //接入
