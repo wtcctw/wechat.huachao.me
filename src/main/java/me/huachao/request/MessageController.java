@@ -60,9 +60,8 @@ public class MessageController {
                       @RequestParam("msg_signature") String msg_signature,
                       @RequestParam(value = "encrypt_type", required = false) String encrypt_type,
                       HttpEntity<byte[]> requestEntity) {
-        logger.info("header:", requestEntity.getHeaders());
         String postBody = new String(requestEntity.getBody(), Charset.forName("utf-8"));
-        logger.info("postBody:", postBody);
+        logger.info("header:%s, postBody:%s", requestEntity.getHeaders().toString(), postBody);
         return null;
     }
 
