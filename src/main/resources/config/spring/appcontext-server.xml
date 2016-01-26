@@ -11,4 +11,12 @@
     <context:component-scan base-package="me.huachao"/>
     <mvc:annotation-driven />
 
+    <bean id="crypt" class="me.huachao.service.crypt.WXBizMsgCrypt">
+        <constructor-arg value="huachao_wechat"/>
+        <constructor-arg value="Ly2xPGHMoMUfzNCxqIN3Z2NopsnKzGGEwvRo56j0pWT"/>
+        <constructor-arg value="wxcbba150534e590d1"/>
+    </bean>
+
+    <bean id="messageService" class="me.huachao.service.MessageService"/>
+
 </beans>
