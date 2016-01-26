@@ -61,7 +61,7 @@ public class MessageController {
                       @RequestParam(value = "encrypt_type", required = false) String encrypt_type,
                       HttpEntity<byte[]> requestEntity) {
         String postBody = new String(requestEntity.getBody(), Charset.forName("utf-8"));
-        logger.info("header:%s, postBody:%s", requestEntity.getHeaders().toString(), postBody);
+        logger.info(String.format("header:%s, postBody:%s", requestEntity.getHeaders().toString(), postBody));
         return null;
     }
 
