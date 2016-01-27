@@ -21,3 +21,5 @@
 - 注意,此项目依赖jdk8,还有微信AES加解密依赖的jar,请看[这里](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html).下载后看README
 
 ## 目前的功能
+
+
