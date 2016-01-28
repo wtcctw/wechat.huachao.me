@@ -1,5 +1,6 @@
 package me.huachao;
 
+import me.huachao.util.http.IdleConnectionMonitorThread;
 import org.eclipse.jetty.rewrite.handler.RewriteHandler;
 import org.eclipse.jetty.rewrite.handler.RewritePatternRule;
 import org.eclipse.jetty.rewrite.handler.RewriteRegexRule;
@@ -34,8 +35,8 @@ public class WeChatServer {
         server.addConnector(http);
 
         //urlrewrite handler
+        /*
         RewriteHandler rewrite = new RewriteHandler();
-
         RewritePatternRule oldToNew = new RewritePatternRule();
         oldToNew.setPattern("/some/old/spingMvcHandler");
         oldToNew.setReplacement("/someAction?val1=old&val2=spingMvcHandler");
@@ -45,6 +46,7 @@ public class WeChatServer {
         reverse.setRegex("/reverse/([^/]*)/(.*)");
         reverse.setReplacement("/reverse/$2/$1");
         rewrite.addRule(reverse);
+        */
 
 
         //springmvc handler
@@ -54,14 +56,12 @@ public class WeChatServer {
         context.setConfigLocations(new String[]{"classpath:config/spring/appcontext-server.xml"});
         spingMvcHandler.addEventListener(new ContextLoaderListener(context));
         spingMvcHandler.addServlet(new ServletHolder(new DispatcherServlet(context)), "/*");
-        // Add default servlet
-//        spingMvcHandler.addServlet(DefaultServlet.class, "/");
 
 
         //add handlerList
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{
-                rewrite,
+                //rewrite,
                 spingMvcHandler,
                 new DefaultHandler()
         });
@@ -76,12 +76,17 @@ public class WeChatServer {
 
         logger.info("Jetty Started!");
 
+        //monitor the http idle connection monitor
+        IdleConnectionMonitorThread idleConnectionMonitorThread = context.getBean(IdleConnectionMonitorThread.class);
+        idleConnectionMonitorThread.start();
+
         try {
             server.join();
         } catch (InterruptedException e) {
             logger.warn("main thread Interrupted! Stopping Jetty Server", e);
             try {
                 server.stop();
+                idleConnectionMonitorThread.interrupt();
             } catch (Exception e1) {
                 logger.warn("Failed to Stop Jetty Server", e);
             }
