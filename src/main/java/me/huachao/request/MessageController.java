@@ -81,7 +81,8 @@ public class MessageController {
             BaseOutputMessage outputMessage = handleTextMsg((TextInputMessage) inputMessage);
             return messageService.encryptMsg(outputMessage.toString(), timestamp, nonce);
         } else if (inputMessage != null && inputMessage.getType().equals("voice")) {
-
+            BaseOutputMessage outputMessage = handleVoiceMsg((VoiceInputMessage)inputMessage);
+            return messageService.encryptMsg(outputMessage.toString(), timestamp, nonce);
         }
         return messageService.encryptMsg("success", timestamp, nonce);
     }
