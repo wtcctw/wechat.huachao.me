@@ -1,15 +1,15 @@
 package me.huachao.service;
 
+import me.huachao.WeChatException;
 import me.huachao.dto.message.input.BaseInputMessage;
 import me.huachao.dto.message.input.TextInputMessage;
-import me.huachao.service.crypt.AesException;
+import me.huachao.dto.message.input.VoiceInputMessage;
 import me.huachao.service.crypt.WXBizMsgCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import javax.annotation.Resource;
@@ -33,10 +33,10 @@ public class MessageService {
         String decryptedMsg = null;
         try {
             decryptedMsg = crypt.decryptMsg(msgSignature, timestamp, nonce, postBody);
-            logger.info(String.format("decrypted message:%s", decryptedMsg));
+            logger.info("decrypted message:{}", decryptedMsg);
         } catch (Exception ex) {
-            decryptedMsg = "";
-            logger.warn("decrypt message failed!", ex);
+            logger.warn("decrypt message failed!{}", ex);
+            throw new WeChatException(WeChatException.ERR_MSG, "decrypt message fail."+postBody);
         }
         return decryptedMsg;
     }
@@ -45,9 +45,10 @@ public class MessageService {
         String encryptedMsg = "success";
         try {
             encryptedMsg = crypt.encryptMsg(replyMsg, timestamp, nonce);
-            logger.info(String.format("encrypted message:%s", encryptedMsg));
-        } catch (AesException e) {
-            logger.warn("encrypt message failed!", e);
+            logger.info("encrypted message:{}", encryptedMsg);
+        } catch (Exception e) {
+            logger.warn("encrypt message failed!{}", e);
+            throw new WeChatException(WeChatException.ERR_MSG, "encryt message fail."+replyMsg);
         }
         return encryptedMsg;
     }
@@ -66,12 +67,22 @@ public class MessageService {
             String createTime = root.getElementsByTagName("CreateTime").item(0).getTextContent();
             String msgId = root.getElementsByTagName("MsgId").item(0).getTextContent();
             String msgType = root.getElementsByTagName("MsgType").item(0).getTextContent();
-            String content = root.getElementsByTagName("Content").item(0).getTextContent();
             if (!StringUtils.isEmpty(msgType) && msgType.equals("text")) {
-                inputMessage = new TextInputMessage(to, from, createTime, msgType, msgId, content);
+                String content = root.getElementsByTagName("Content").item(0).getTextContent();
+                inputMessage = new TextInputMessage(to, from, createTime, msgType, msgId,
+                                                    content);
+            } else if (!StringUtils.isEmpty(msgType) && msgType.equals("voice")) {
+                String mediaId = root.getElementsByTagName("MediaId").item(0).getTextContent();
+                String format = root.getElementsByTagName("Format").item(0).getTextContent();
+                String recognition = root.getElementsByTagName("Recognition").item(0).getTextContent();
+                inputMessage = new VoiceInputMessage(to, from, createTime, msgType, msgId,
+                                                        mediaId, format, recognition);
+            } else {
+                throw new WeChatException(WeChatException.ERR_MSG, "Unsupported message format."+xmltext);
             }
         } catch (Exception e) {
-            logger.warn("parseInputMsg failed!", e);
+            logger.warn("parse message fail, message:{}, exception:{}", xmltext, e);
+            throw new WeChatException(WeChatException.ERR_MSG, "Parsing message fail."+xmltext);
         }
         return inputMessage;
     }

@@ -5,6 +5,9 @@ package me.huachao;
  */
 public class WeChatException extends RuntimeException {
 
+    public static final int ERR_MSG = 5001;
+    public static final int ERR_HTTP = 5002;
+
     private int errCode;
     private String errMsg;
 

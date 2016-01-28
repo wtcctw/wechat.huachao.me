@@ -1,31 +1,35 @@
-package me.huachao.service;
+package me.huachao.util.http;
 
-import me.huachao.util.http.HttpUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 import java.io.IOException;
 
 /**
- * Created by huachao on 1/27/16.
+ * Created by huachao on 1/28/16.
  */
-public class SimsimiService {
 
-    private static final String key = "4c353134-3d6d-4da9-bb15-a189065e44e4";
-    private static final String urlTemplate = "http://sandbox.api.simsimi.com/request.p?key=%s&lc=ch&text=%s";
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:config/spring/appcontext-server.xml"})
+public class HttpUtilsTest {
 
     @Resource
     private HttpUtils httpUtils;
 
-    public String reply(String words) {
-        String response = httpUtils.getResponse(String.format(urlTemplate, key, words),
+    @Test
+    public void testGetResponseT() {
+        String body = httpUtils.getResponse("http://sandbox.api.simsimi.com/request.p?key=4c353134-3d6d-4da9-bb15-a189065e44e4&lc=ch&text=你好啊",
                 new ResponseHandler<String>() {
-                    public String handleResponse(HttpResponse response) throws IOException {
+                    public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
                         int status = response.getStatusLine().getStatusCode();
                         if (status >= 200 && status < 300) {
                             HttpEntity entity = response.getEntity();
@@ -34,14 +38,9 @@ public class SimsimiService {
                             throw new ClientProtocolException("Unexpected response status: " + status);
                         }
                     }
-                });
-
-        JSONObject respJson = new JSONObject(response);
-        int sc = respJson.getInt("result");
-        if (sc == 100) {
-            return respJson.getString("response");
-        }
-        return "小黄鸡暂时不能陪你聊天啦~~";
+                }
+        );
+        Assert.assertNotNull(body);
     }
 
 }
