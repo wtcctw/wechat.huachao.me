@@ -16,14 +16,14 @@ import java.io.IOException;
  */
 public class SimsimiService {
 
-    private static final String key = "4c353134-3d6d-4da9-bb15-a189065e44e4";
     private static final String urlTemplate = "http://sandbox.api.simsimi.com/request.p?key=%s&lc=ch&text=%s";
 
+    private String apiKey;
     @Resource
     private HttpUtils httpUtils;
 
     public String reply(String words) {
-        String response = httpUtils.getResponse(String.format(urlTemplate, key, words),
+        String response = httpUtils.getResponse(String.format(urlTemplate, apiKey, words),
                 new ResponseHandler<String>() {
                     public String handleResponse(HttpResponse response) throws IOException {
                         int status = response.getStatusLine().getStatusCode();
@@ -44,4 +44,7 @@ public class SimsimiService {
         return "小黄鸡暂时不能陪你聊天啦~~";
     }
 
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
 }

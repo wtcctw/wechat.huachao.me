@@ -12,13 +12,15 @@
     <mvc:annotation-driven />
 
     <bean id="crypt" class="me.huachao.service.crypt.WXBizMsgCrypt">
-        <constructor-arg value="huachao_wechat"/>
-        <constructor-arg value="Ly2xPGHMoMUfzNCxqIN3Z2NopsnKzGGEwvRo56j0pWT"/>
-        <constructor-arg value="wxcbba150534e590d1"/>
+        <constructor-arg value="${wechat.token}"/>
+        <constructor-arg value="${wechat.encodingAesKey}"/>
+        <constructor-arg value="${wechat.appId}"/>
     </bean>
 
     <bean id="messageService" class="me.huachao.service.MessageService"/>
-    <bean id="simsimiService" class="me.huachao.service.SimsimiService"/>
+    <bean id="simsimiService" class="me.huachao.service.SimsimiService">
+        <property name="apiKey" value="${wechat.simsimi.api.key}" />
+    </bean>
 
     <!-- Apache HTTP Components Client -->
     <bean id="poolingHttpClientConnectionManager" class="org.apache.http.impl.conn.PoolingHttpClientConnectionManager">
