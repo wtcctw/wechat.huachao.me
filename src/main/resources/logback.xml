@@ -1,4 +1,5 @@
 <configuration>
+    <property name="logDir" value="./log"/>
     <property name="appName" value="wechat" />
     <contextName>${appName}</contextName>
 
@@ -9,7 +10,7 @@
     </appender>
 
     <appender name="AppLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${appName}.log</file>
+        <file>${logDir}/${appName}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${appName}.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
             <maxHistory>30</maxHistory>
@@ -20,7 +21,7 @@
     </appender>
 
     <appender name="AllLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>all.log</file>
+        <file>${logDir}/all.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>all.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
             <maxHistory>30</maxHistory>

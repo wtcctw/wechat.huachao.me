@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 指定Spring配置文件的Schema信息 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <!-- 定义数据源Bean-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <!-- 指定连接数据库的驱动 -->
+        <property name="driverClassName" value="org.sqlite.JDBC" />
+        <!-- 指定连接数据库的URL -->
+        <property name="url" value="jdbc:sqlite:C:/Users/anialy/Desktop/workspace/MyProj/db/MY_DB" />
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource">
+            <ref local="dataSource" />
+        </property>
+    </bean>
+
+
+</beans>
