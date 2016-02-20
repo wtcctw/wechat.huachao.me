@@ -53,7 +53,7 @@ public class WeChatServer {
         ServletContextHandler spingMvcHandler = new ServletContextHandler();
         spingMvcHandler.setContextPath("/");
         XmlWebApplicationContext context = new XmlWebApplicationContext();
-        context.setConfigLocations(new String[]{"classpath:config/spring/appcontext-server.xml"});
+        context.setConfigLocations(new String[]{"classpath:config/spring/appcontext-*.xml"});
         spingMvcHandler.addEventListener(new ContextLoaderListener(context));
         spingMvcHandler.addServlet(new ServletHolder(new DispatcherServlet(context)), "/*");
 

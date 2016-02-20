@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:config/spring/appcontext-server.xml"})
+@ContextConfiguration(locations = {"classpath:config/spring/appcontext-*.xml"})
 public class HttpUtilsTest {
 
     @Resource
