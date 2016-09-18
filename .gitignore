@@ -31,7 +31,6 @@
 *.dmg
 *.gz
 *.iso
-*.jar
 *.rar
 *.tar
 *.zip
@@ -74,4 +73,3 @@ classes/
 .idea/
 
 # Wechat Specifically
-*.db
