@@ -64,7 +64,6 @@ Thumbs.db
 ######################
 target/
 classes/
-bin/
 *.*~
 
 # Intellij project files #
