@@ -32,6 +32,7 @@
 *.gz
 *.iso
 *.rar
+*.jar
 *.tar
 *.zip
 *.war
