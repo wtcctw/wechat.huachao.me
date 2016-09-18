@@ -1,8 +1,11 @@
 package me.huachao.dto.message.input;
 
+import lombok.Data;
+
 /**
  * Created by huachao on 1/26/16.
  */
+@Data
 public class BaseInputMessage {
 
     private String to;
@@ -19,43 +22,4 @@ public class BaseInputMessage {
         this.msgId = Long.parseLong(msgId);
     }
 
-    public String getTo() {
-        return to;
-    }
-
-    public void setTo(String to) {
-        this.to = to;
-    }
-
-    public String getFrom() {
-        return from;
-    }
-
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    public int getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(int createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public long getMsgId() {
-        return msgId;
-    }
-
-    public void setMsgId(long msgId) {
-        this.msgId = msgId;
-    }
 }

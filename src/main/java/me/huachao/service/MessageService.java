@@ -7,12 +7,13 @@ import me.huachao.dto.message.input.VoiceInputMessage;
 import me.huachao.service.crypt.WXBizMsgCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
-import javax.annotation.Resource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
@@ -21,12 +22,12 @@ import java.io.StringReader;
  * Created by huachao on 1/26/16.
  */
 
-
+@Service
 public class MessageService {
 
     private static final Logger logger = LoggerFactory.getLogger(MessageService.class);
 
-    @Resource
+    @Autowired
     private WXBizMsgCrypt crypt;
 
     public String decryptMsg(String msgSignature, String timestamp, String nonce, String postBody) {

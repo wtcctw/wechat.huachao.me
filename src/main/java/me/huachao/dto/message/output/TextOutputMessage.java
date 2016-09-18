@@ -1,10 +1,13 @@
 package me.huachao.dto.message.output;
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
  * Created by huachao on 1/26/16.
  */
+@Data
 public class TextOutputMessage extends BaseOutputMessage{
 
     private static final String template = "<xml>\n" +
@@ -19,14 +22,6 @@ public class TextOutputMessage extends BaseOutputMessage{
 
     public TextOutputMessage(String to, String from, Date createTime, String type, String content) {
         super(to, from, createTime, type);
-        this.content = content;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
         this.content = content;
     }
 

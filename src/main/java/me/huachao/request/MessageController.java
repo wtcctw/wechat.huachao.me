@@ -11,18 +11,18 @@ import me.huachao.dto.message.input.VoiceInputMessage;
 import me.huachao.dto.message.output.BaseOutputMessage;
 import me.huachao.dto.message.output.TextOutputMessage;
 import me.huachao.service.AccessService;
+import me.huachao.service.BaiduTuringService;
 import me.huachao.service.MessageService;
-import me.huachao.service.SimsimiService;
 import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import java.nio.charset.Charset;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 /**
@@ -34,10 +34,10 @@ public class MessageController {
 
     private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
 
-    @Resource
+    @Autowired
     private MessageService messageService;
-    @Resource
-    private SimsimiService simsimiService;
+    @Autowired
+    private BaiduTuringService baiduTuringService;
 
     @RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
     public String dispatchMsg(@RequestParam(value = "echostr", required = false) String echostr) {
@@ -67,10 +67,10 @@ public class MessageController {
                       @RequestParam("nonce") String nonce,
                       @RequestParam("msg_signature") String msgSignature,
                       @RequestParam(value = "encrypt_type", required = false) String encrypt_type,
-                      HttpEntity<byte[]> requestEntity) {
+                      HttpEntity<byte[]> requestEntity) throws UnsupportedEncodingException {
         ShareContext.setContext("timestamp", timestamp);
         ShareContext.setContext("nonce", nonce);
-        String postBody = new String(requestEntity.getBody(), Charset.forName("utf-8"));
+        String postBody = new String(requestEntity.getBody(), "UTF-8");
         logger.info("header:{}, postBody:{}", requestEntity.getHeaders().toString(), postBody);
         String decryptMsg = messageService.decryptMsg(msgSignature, timestamp, nonce, postBody);
         logger.info("decryptedMessage:{}", decryptMsg);
@@ -102,7 +102,7 @@ public class MessageController {
 
     private BaseOutputMessage handleTextMsg(TextInputMessage textInputMessage) {
         String words = textInputMessage.getContent();
-        String replyWords = simsimiService.reply(words);
+        String replyWords = baiduTuringService.ask(words);
         TextOutputMessage outputMessage = new TextOutputMessage(textInputMessage.getFrom(),
                 textInputMessage.getTo(), new Date(), "text", replyWords);
         return outputMessage;
@@ -110,7 +110,7 @@ public class MessageController {
 
     private BaseOutputMessage handleVoiceMsg(VoiceInputMessage voiceInputMessage) {
         String words = voiceInputMessage.getRecongnition();
-        String replyWords = simsimiService.reply(words);
+        String replyWords = baiduTuringService.ask(words);
         TextOutputMessage outputMessage = new TextOutputMessage(voiceInputMessage.getFrom(),
                 voiceInputMessage.getTo(), new Date(), "text", replyWords);
         return outputMessage;

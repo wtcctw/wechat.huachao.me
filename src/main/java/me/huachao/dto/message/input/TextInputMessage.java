@@ -1,8 +1,11 @@
 package me.huachao.dto.message.input;
 
+import lombok.Data;
+
 /**
  * Created by huachao on 1/26/16.
  */
+@Data
 public class TextInputMessage extends BaseInputMessage {
 
     private String content;
@@ -12,11 +15,4 @@ public class TextInputMessage extends BaseInputMessage {
         this.content = content;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
 }

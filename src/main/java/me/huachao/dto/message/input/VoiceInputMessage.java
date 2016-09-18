@@ -1,8 +1,12 @@
 package me.huachao.dto.message.input;
 
+import lombok.Data;
+
 /**
  * Created by huachao on 1/26/16.
  */
+
+@Data
 public class VoiceInputMessage extends BaseInputMessage {
 
     private String mediaId;
@@ -17,27 +21,4 @@ public class VoiceInputMessage extends BaseInputMessage {
         this.recongnition = recongnition;
     }
 
-    public String getMediaId() {
-        return mediaId;
-    }
-
-    public void setMediaId(String mediaId) {
-        this.mediaId = mediaId;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
-    }
-
-    public String getRecongnition() {
-        return recongnition;
-    }
-
-    public void setRecongnition(String recongnition) {
-        this.recongnition = recongnition;
-    }
 }
