@@ -1,7 +1,7 @@
 #!/bin/sh
 PROJECT="wechat"
 APP="wechat"
-JAR_PATH="/root/$PROJECT/bin/$APP.jar"
+JAR_PATH="/root/wechat.huachao.me/bin/$APP.jar"
 JAVA_OPTS="-ms512m -mx512m -Xmn256m -XX:MaxPermSize=256m"
 DEBUG_PORT="84841"
 DEBUG_ARGS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=$DEBUG_PORT"
